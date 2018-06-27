@@ -1,0 +1,11 @@
+/Users/jhutch/Desktop/Dojo/SummerGames/bin/Debug/netcoreapp2.0/SummerGames.deps.json
+/Users/jhutch/Desktop/Dojo/SummerGames/bin/Debug/netcoreapp2.0/SummerGames.runtimeconfig.json
+/Users/jhutch/Desktop/Dojo/SummerGames/bin/Debug/netcoreapp2.0/SummerGames.runtimeconfig.dev.json
+/Users/jhutch/Desktop/Dojo/SummerGames/bin/Debug/netcoreapp2.0/SummerGames.dll
+/Users/jhutch/Desktop/Dojo/SummerGames/bin/Debug/netcoreapp2.0/SummerGames.pdb
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.csprojAssemblyReference.cache
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.csproj.CoreCompileInputs.cache
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.AssemblyInfoInputs.cache
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.AssemblyInfo.cs
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.dll
+/Users/jhutch/Desktop/Dojo/SummerGames/obj/Debug/netcoreapp2.0/SummerGames.pdb
