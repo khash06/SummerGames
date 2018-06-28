@@ -8,6 +8,7 @@ namespace SummerGames.Models
 {
     public class Enemies
     {
+        public int EnemiesId { get; set; }
         public int health { get; set; }
         public int healthMax { get; set; }
         public int strength { get; set; }

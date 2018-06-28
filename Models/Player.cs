@@ -19,7 +19,8 @@ namespace SummerGames.Models
         public bool Life { get; set; } = true;
         public Encounters Encounters { get; set; }
         List<Encounters> Fights { get; set; }
-
+        public Story Story { get; set; }
+        List<Story> Stories { get; set; }
     
         public Player()
         {
@@ -29,6 +30,7 @@ namespace SummerGames.Models
             health = 100;
             healthMax = 100;
             List<Encounters> Fights = new List<Encounters>();
+            List<Story> Stories = new List<Story>();
         }
         
         public Player(int NewStrength, int NewIntel, int NewDex, int NewHealth)
