@@ -8,13 +8,15 @@ namespace SummerGames.Models
 {
     public class Spider : Enemies
     {   
+        
         public Spider()
         {
+            name = "Spider";
             strength = 10;
             health = 150;
             healthMax = 150;
         }
-        public void spider_attack(Player name1)
+        public void RandomSpiderAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);

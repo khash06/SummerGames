@@ -8,13 +8,15 @@ namespace SummerGames.Models
 {
     public class Zombie : Enemies
     {   
+        
         public Zombie()
-        {
+        { 
+            name = "Zombie";
             strength = 10;
             health = 100;
             healthMax = 100;
         }
-        public void Zombie_attack(Player name1)
+        public void RandomZombieAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);

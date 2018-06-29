@@ -10,45 +10,25 @@ namespace SummerGames.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "storyline",
-                columns: table => new
-                {
-                    StoryId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Storybook = table.Column<string>(nullable: true),
-                    created_at = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_storyline", x => x.StoryId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "player",
                 columns: table => new
                 {
                     PlayerId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Class = table.Column<string>(nullable: true),
-                    Life = table.Column<bool>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    StoryId = table.Column<int>(nullable: true),
                     Username = table.Column<string>(nullable: true),
                     dexterity = table.Column<int>(nullable: false),
                     health = table.Column<int>(nullable: false),
                     healthMax = table.Column<int>(nullable: false),
                     intelligence = table.Column<int>(nullable: false),
+                    life = table.Column<bool>(nullable: false),
                     strength = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_player", x => x.PlayerId);
-                    table.ForeignKey(
-                        name: "FK_player_storyline_StoryId",
-                        column: x => x.StoryId,
-                        principalTable: "storyline",
-                        principalColumn: "StoryId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,10 +38,10 @@ namespace SummerGames.Migrations
                     EncountersId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PlayerId = table.Column<int>(nullable: false),
-                    Story = table.Column<string>(nullable: true),
                     dragons = table.Column<int>(nullable: false),
                     orcs = table.Column<int>(nullable: false),
                     spiders = table.Column<int>(nullable: false),
+                    totalEnemies = table.Column<int>(nullable: false),
                     zombies = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -76,14 +56,38 @@ namespace SummerGames.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "storyline",
+                columns: table => new
+                {
+                    StoryId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PlayerId = table.Column<int>(nullable: false),
+                    created_at = table.Column<DateTime>(nullable: false),
+                    storyBook = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_storyline", x => x.StoryId);
+                    table.ForeignKey(
+                        name: "FK_storyline_player_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "player",
+                        principalColumn: "PlayerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "enemies",
                 columns: table => new
                 {
                     EnemiesId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Discriminator = table.Column<string>(nullable: false),
                     EncountersId = table.Column<int>(nullable: false),
                     health = table.Column<int>(nullable: false),
                     healthMax = table.Column<int>(nullable: false),
+                    life = table.Column<bool>(nullable: false),
+                    name = table.Column<string>(nullable: true),
                     strength = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -126,8 +130,7 @@ namespace SummerGames.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_encounters_PlayerId",
                 table: "encounters",
-                column: "PlayerId",
-                unique: true);
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_enemies_EncountersId",
@@ -145,9 +148,10 @@ namespace SummerGames.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_player_StoryId",
-                table: "player",
-                column: "StoryId");
+                name: "IX_storyline_PlayerId",
+                table: "storyline",
+                column: "PlayerId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -159,13 +163,13 @@ namespace SummerGames.Migrations
                 name: "multiplayer");
 
             migrationBuilder.DropTable(
+                name: "storyline");
+
+            migrationBuilder.DropTable(
                 name: "encounters");
 
             migrationBuilder.DropTable(
                 name: "player");
-
-            migrationBuilder.DropTable(
-                name: "storyline");
         }
     }
 }

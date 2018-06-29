@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using SummerGames.Models;
 using System;
 
@@ -27,20 +28,19 @@ namespace SummerGames.Migrations
 
                     b.Property<int>("PlayerId");
 
-                    b.Property<string>("Story");
-
                     b.Property<int>("dragons");
 
                     b.Property<int>("orcs");
 
                     b.Property<int>("spiders");
 
+                    b.Property<int>("totalEnemies");
+
                     b.Property<int>("zombies");
 
                     b.HasKey("EncountersId");
 
-                    b.HasIndex("PlayerId")
-                        .IsUnique();
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("encounters");
                 });
@@ -50,11 +50,18 @@ namespace SummerGames.Migrations
                     b.Property<int>("EnemiesId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<int>("EncountersId");
 
                     b.Property<int>("health");
 
                     b.Property<int>("healthMax");
+
+                    b.Property<bool>("life");
+
+                    b.Property<string>("name");
 
                     b.Property<int>("strength");
 
@@ -63,6 +70,8 @@ namespace SummerGames.Migrations
                     b.HasIndex("EncountersId");
 
                     b.ToTable("enemies");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Enemies");
                 });
 
             modelBuilder.Entity("SummerGames.Models.Multiplayer", b =>
@@ -90,11 +99,10 @@ namespace SummerGames.Migrations
 
                     b.Property<string>("Class");
 
-                    b.Property<bool>("Life");
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<string>("Password");
-
-                    b.Property<int?>("StoryId");
 
                     b.Property<string>("Username");
 
@@ -106,13 +114,15 @@ namespace SummerGames.Migrations
 
                     b.Property<int>("intelligence");
 
+                    b.Property<bool>("life");
+
                     b.Property<int>("strength");
 
                     b.HasKey("PlayerId");
 
-                    b.HasIndex("StoryId");
-
                     b.ToTable("player");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Player");
                 });
 
             modelBuilder.Entity("SummerGames.Models.Story", b =>
@@ -120,20 +130,115 @@ namespace SummerGames.Migrations
                     b.Property<int>("StoryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Storybook");
+                    b.Property<int>("PlayerId");
 
                     b.Property<DateTime>("created_at");
 
+                    b.Property<string>("storyBook");
+
                     b.HasKey("StoryId");
 
+                    b.HasIndex("PlayerId")
+                        .IsUnique();
+
                     b.ToTable("storyline");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Dragon", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Enemies");
+
+
+                    b.ToTable("Dragon");
+
+                    b.HasDiscriminator().HasValue("Dragon");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Orc", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Enemies");
+
+
+                    b.ToTable("Orc");
+
+                    b.HasDiscriminator().HasValue("Orc");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Spider", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Enemies");
+
+
+                    b.ToTable("Spider");
+
+                    b.HasDiscriminator().HasValue("Spider");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Zombie", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Enemies");
+
+
+                    b.ToTable("Zombie");
+
+                    b.HasDiscriminator().HasValue("Zombie");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Hunter", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Player");
+
+
+                    b.ToTable("Hunter");
+
+                    b.HasDiscriminator().HasValue("Hunter");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Mage", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Player");
+
+
+                    b.ToTable("Mage");
+
+                    b.HasDiscriminator().HasValue("Mage");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Ninja", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Player");
+
+
+                    b.ToTable("Ninja");
+
+                    b.HasDiscriminator().HasValue("Ninja");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Priest", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Player");
+
+
+                    b.ToTable("Priest");
+
+                    b.HasDiscriminator().HasValue("Priest");
+                });
+
+            modelBuilder.Entity("SummerGames.Models.Samurai", b =>
+                {
+                    b.HasBaseType("SummerGames.Models.Player");
+
+
+                    b.ToTable("Samurai");
+
+                    b.HasDiscriminator().HasValue("Samurai");
                 });
 
             modelBuilder.Entity("SummerGames.Models.Encounters", b =>
                 {
                     b.HasOne("SummerGames.Models.Player", "Player")
-                        .WithOne("Encounters")
-                        .HasForeignKey("SummerGames.Models.Encounters", "PlayerId")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -158,11 +263,12 @@ namespace SummerGames.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SummerGames.Models.Player", b =>
+            modelBuilder.Entity("SummerGames.Models.Story", b =>
                 {
-                    b.HasOne("SummerGames.Models.Story", "Story")
-                        .WithMany()
-                        .HasForeignKey("StoryId");
+                    b.HasOne("SummerGames.Models.Player")
+                        .WithOne("Story")
+                        .HasForeignKey("SummerGames.Models.Story", "PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

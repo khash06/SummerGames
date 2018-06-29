@@ -16,11 +16,12 @@ namespace SummerGames.Models
         public int dexterity { get; set; }
         public int health { get; set; }
         public int healthMax { get; set; }
-        public bool Life { get; set; } = true;
-        public Encounters Encounters { get; set; }
+        public bool life { get; set; } = true;
         List<Encounters> Fights { get; set; }
         public Story Story { get; set; }
         List<Story> Stories { get; set; }
+
+
     
         public Player()
         {

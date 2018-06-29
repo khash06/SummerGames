@@ -15,29 +15,36 @@ namespace SummerGames.Models
             health = 270;
             healthMax = 270;
         }
-        public void Attack(Enemies name1)
+        public int Attack(Enemies name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1 * dexterity, 3 * dexterity);
             name1.health = name1.health - attack;
+            return attack;
         }
         public void Mend()//heal
         {
             Random rand = new Random();
             int mend = rand.Next(3* dexterity, 6 * dexterity);
             health += mend;
+            if(health > 270)
+            {
+                health = 270;
+            }
         }
-        public void Snipe(Enemies name1)
+        public int Snipe(Enemies name1)
         {
             Random rand = new Random();
             int snipe = rand.Next(2 * dexterity, 10 * dexterity);
             name1.health = name1.health - snipe;
+            return snipe;
         }
-        public void Silencing_Shot(Enemies name1)
+        public int Silencing_Shot(Enemies name1)
         {
             Random rand = new Random();
             int silencing_shot = rand.Next(3 * dexterity, 5 * dexterity);
             name1.health = name1.health - silencing_shot;
+            return silencing_shot;
         }
     }
 }

@@ -1,8 +1,17 @@
-﻿<div class="container">
+﻿
+
+<div class="container">
     <div class="game_box">
-        @foreach(var thing in @ViewBag.events)
+        @if(@ViewBag.story != null)
         {
-            <p>@thing</p>
+            @foreach(var thing in @ViewBag.story)
+            {
+                <p>@thing.storyBook</p>
+            }
+        }
+        @if(@ViewBag.start == true)
+        {
+            <a href="startgame"><button class="button">Start Game</button></a>
         }
     </div>
     @if(ViewBag.tempPercent != null)
@@ -24,9 +33,9 @@
         </div>
     }
     <div class="col-xs-3">
-        <p class="labels">Health:</p>
         @if(ViewBag.healthPercent != null)
         {
+            <p class="labels">Health:</p>
             string healthColor = "";
             @if(30 < @ViewBag.healthPercent && @ViewBag.healthPercent < 60)
             {
@@ -43,6 +52,17 @@
                 <div class="progress-bar" style="width: @ViewBag.healthPercent%; background-color: @healthColor !important;">@ViewBag.health / @ViewBag.healthMax</div>
             </div>
         }
+        @if(ViewBag.moves != null)
+        {
+            int count = 1;
+            foreach(var move in @ViewBag.moves)
+            {
+                <a href="/playersturn/@count"><button class="movebtn">@move</button></a>
+                count++;
+            }
+        }
+
+        <a href="/Logout">Logout</a>
     </div>
 </div>
 
@@ -85,5 +105,38 @@
     .labels{
         margin-top: 10px;
         margin-bottom: -3px;
+    }
+
+    .button
+    {
+        transition-duration: 0.4s;
+        -webkit-transition-duration: 0.4s;
+        padding: 40px 100px;
+        border-radius: 8px;
+        background-color: white;
+        color: black;
+        border: 2px solid red;
+    }
+
+    .button:hover
+    {
+        background-color: red;
+        color: white;
+    }
+
+    .movebtn
+    {
+        transition-duration: 0.4s;
+        -webkit-transition-duration: 0.4s;
+        border-radius: 4px;
+        background-color: white;
+        color: black;
+        border: 2px solid red;
+    }
+
+    .movebtn:hover
+    {
+        background-color: red;
+        color: white;
     }
 </style>

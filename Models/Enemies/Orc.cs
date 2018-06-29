@@ -10,11 +10,12 @@ namespace SummerGames.Models
     {   
         public Orc()
         {
+            name = "Orc";
             strength = 10;
             health = 200;
             healthMax = 200;
         }
-        public void Orc_attack(Player name1)
+        public void RandomOrcAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);

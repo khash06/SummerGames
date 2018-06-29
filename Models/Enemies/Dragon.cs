@@ -8,13 +8,15 @@ namespace SummerGames.Models
 {
     public class Dragon : Enemies
     {   
+        
         public Dragon()
         {
+            name = "Dragon";
             strength = 10;
             health = 300;
             healthMax = 300;
         }
-        public void Dragon_attack(Player name1)
+        public void RandomDragonAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);

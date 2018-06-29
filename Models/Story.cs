@@ -9,7 +9,8 @@ namespace SummerGames.Models
     public class Story
     {
         public int StoryId { get; set; }
-        public string Storybook { get; set; }
+        public string storyBook { get; set; }
         public DateTime created_at { get; set; }
+        public int PlayerId { get; set; }
     }
 }

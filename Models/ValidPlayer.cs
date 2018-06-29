@@ -13,6 +13,8 @@ namespace SummerGames.Models
         [Required(ErrorMessage="Pick a password")]
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string confirmPassword { get; set; }
+        public string Confirm_Password { get; set; }
+        [Required(ErrorMessage="Pick a class!")]
+        public string Class { get; set; }
     }
 }
