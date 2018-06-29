@@ -12,7 +12,7 @@ using System;
 namespace SummerGames.Migrations
 {
     [DbContext(typeof(SummerContext))]
-    [Migration("20180629053444_Player")]
+    [Migration("20180629180654_Player")]
     partial class Player
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,12 +135,13 @@ namespace SummerGames.Migrations
 
                     b.Property<DateTime>("created_at");
 
+                    b.Property<int>("flag");
+
                     b.Property<string>("storyBook");
 
                     b.HasKey("StoryId");
 
-                    b.HasIndex("PlayerId")
-                        .IsUnique();
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("storyline");
                 });
@@ -266,9 +267,9 @@ namespace SummerGames.Migrations
 
             modelBuilder.Entity("SummerGames.Models.Story", b =>
                 {
-                    b.HasOne("SummerGames.Models.Player")
-                        .WithOne("Story")
-                        .HasForeignKey("SummerGames.Models.Story", "PlayerId")
+                    b.HasOne("SummerGames.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

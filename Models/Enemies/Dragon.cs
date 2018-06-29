@@ -16,7 +16,7 @@ namespace SummerGames.Models
             health = 300;
             healthMax = 300;
         }
-        public void RandomDragonAttack(Player name1)
+        public int RandomDragonAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);
@@ -40,18 +40,21 @@ namespace SummerGames.Models
             {
                 this.Attack(name1);
             }
+            return attack;
         }
-        public void Attack(Player name1)
+        public int Attack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(3 * strength, 5 * strength);
             name1.health = name1.health - attack;
+            return attack;
         }
-        public void FireBreath(Player name1)
+        public int FireBreath(Player name1)
         {
             Random rand = new Random();
             int firebreath = rand.Next(9 * strength, 13 * strength);
             name1.health = name1.health - firebreath;
+            return firebreath;
         }
     }
 }

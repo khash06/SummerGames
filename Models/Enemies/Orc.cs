@@ -15,7 +15,7 @@ namespace SummerGames.Models
             health = 200;
             healthMax = 200;
         }
-        public void RandomOrcAttack(Player name1)
+        public int RandomOrcAttack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);
@@ -39,18 +39,21 @@ namespace SummerGames.Models
             {
                 this.Attack(name1);
             }
+            return attack;
         }
-        public void Attack(Player name1)
+        public int Attack(Player name1)
         {
             Random rand = new Random();
             int attack = rand.Next(1 * strength, 3 * strength);
             name1.health = name1.health - attack;
+            return attack;
         }
-        public void Club_Bash(Player name1)
+        public int Club_Bash(Player name1)
         {
             Random rand = new Random();
             int club_bash = rand.Next(7 * strength, 10 * strength);
             name1.health = name1.health - club_bash;
+            return club_bash;
         }
     }
 }

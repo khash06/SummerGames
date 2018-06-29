@@ -18,7 +18,6 @@ namespace SummerGames.Models
         public int healthMax { get; set; }
         public bool life { get; set; } = true;
         List<Encounters> Fights { get; set; }
-        public Story Story { get; set; }
         List<Story> Stories { get; set; }
 
 

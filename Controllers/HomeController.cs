@@ -50,7 +50,8 @@ namespace SummerGames.Controllers
                 return View();
             }
             return RedirectToAction("Login");
-        }
+        }   
+        [Route("Registration")]
         public IActionResult Registration()
         {
             return View();
@@ -120,6 +121,7 @@ namespace SummerGames.Controllers
             }
             return View("Registration");
         }
+        [Route("Login")]
         public IActionResult Login()
         {
             return View();
@@ -149,12 +151,12 @@ namespace SummerGames.Controllers
             HttpContext.Session.SetInt32("Level", 1);
             int Id = (int)HttpContext.Session.GetInt32("PlayerId");
             Player Player1 = _context.player.SingleOrDefault(p => p.PlayerId == Id);
-            Player1.health = Player1.health;
+            Player1.health = Player1.healthMax;
             List<Story> story = _context.storyline.Where(p => p.PlayerId == Id).ToList();
-            // foreach(var thing in story)
-            // {
-            //     _context.Remove(thing);
-            // }
+            foreach(var thing in story)
+            {
+                _context.Remove(thing);
+            }
             _context.SaveChanges();
             return RedirectToAction("firstEncounter");
         }
@@ -172,18 +174,28 @@ namespace SummerGames.Controllers
             if(Level == 1)
             {
                 newStory.storyBook = "On a hot summer day at the Dojo..........The Dojo's AC, which is on the top floor, was destroyed by the Summer Dragon God";
+                newStory2.storyBook = "2 Spiders  2 Zombies and 1 Orc Spawned. You have to take them down before they take you down. heh GOOD LUCK!!!!!";
                 newStory.created_at = DateTime.Now;
+                newStory2.created_at = DateTime.Now;
                 newStory.PlayerId = playerId;
+                newStory2.PlayerId = playerId;
+                newStory.flag = 1;
+                newStory2.flag = 1;                                
+                _context.Add(newStory2);
+                _context.SaveChanges();
             }
             else if (Level == 2)
             {
                 newStory.storyBook = "Climbed the stairs to the Second Floor as the temperature continues to rise. ";
-                newStory2.storyBook = "2 Spiders  2 Zombies and 1 Orc Spawned. You have to take them down before they take you down. heh GOOD LUCK!!!!!";
+                newStory2.storyBook = "4 Spiders  4 Zombies and 2 Orc Spawned. You have to take them down before they take you down. heh GOOD LUCK!!!!!";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = playerId;
                 newStory2.created_at= DateTime.Now;
                 newStory2.PlayerId = playerId;
+                newStory.flag = 1;
+                newStory2.flag = 1;
                 SetTemp(30);
+                _context.Add(newStory2);                
             }
             else if (Level == 3)
             {
@@ -191,6 +203,7 @@ namespace SummerGames.Controllers
                 SetTemp(50);
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = playerId;
+                newStory.flag = 1;
             }
             _context.Add(newStory);
             if(Level == 3)
@@ -304,6 +317,8 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
+                                                                        
                 }
                 else if(attk == 2)
                 {
@@ -312,22 +327,25 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 4;
                 }
                 else if(attk == 3)
                 {
                     int attackVal = Player.Fireball(monster);  
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ "damage";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ " damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;                      
                 }                
                 else if(attk == 4)
                 {
                     int attackVal =  Player.FrostBolt(monster);
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +"damage";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +" damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId; 
+                    newStory.flag = 2; 
                 }
             }
             if(Player1.Class == "hunter")
@@ -341,6 +359,7 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
                 else if(attk == 2)
                 {
@@ -348,7 +367,8 @@ namespace SummerGames.Controllers
                     newStory.storyBook = "You were mended fight on Hunter.";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;                                       
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 4;                                       
                 }
                 else if(attk == 3)
                 {
@@ -357,14 +377,16 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;  
+                    newStory.flag = 2;
                 }                
                 else if(attk == 4)
                 {
                     int attackVal =  Player.Silencing_Shot(monster);
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ "damage";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ " damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;  
                 }
             }
             if(Player1.Class == "samurai")
@@ -378,6 +400,7 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
                 else if(attk == 2)
                 {
@@ -386,22 +409,25 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 4;                    
                 }
                 else if(attk == 3)
                 {
-                    int attackVal = Player.Smash(monster);
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +"damage";
+                    int attackVal = Player.Smash(monster);  
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +" damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
-                }
+                    newStory.flag = 2;  
+                }                
                 else if(attk == 4)
                 {
                     int attackVal =  Player.Death_Blow(monster);
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ "damage";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ " damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
             }
             if(Player1.Class == "ninja")
@@ -415,6 +441,7 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
                 else if(attk == 2)
                 {
@@ -423,14 +450,16 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 4;
                 }
                 else if(attk == 3)
                 {
                     int attackVal = Player.Backstab(monster);  
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ "damage.";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ " damage.";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }                
                 else if(attk == 4)
                 {
@@ -438,7 +467,8 @@ namespace SummerGames.Controllers
                     newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal+ " damage.";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
             }
             if(Player1.Class == "priest")
@@ -452,6 +482,7 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
                 else if(attk == 2)
                 {
@@ -460,6 +491,7 @@ namespace SummerGames.Controllers
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
+                    newStory.flag = 4;
                 }
                 else if(attk == 3)
                 {
@@ -467,15 +499,17 @@ namespace SummerGames.Controllers
                     newStory.storyBook = "You used holy light";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }                
                 else if(attk == 4)
                 {
                     int attackVal =  Player.Smight(monster);
-                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +"damage";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +" damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
-                    newStory.PlayerId = PlayerId;  
+                    newStory.PlayerId = PlayerId;
+                    newStory.flag = 2;
                 }
             }
             _context.Add(newStory);
@@ -507,35 +541,39 @@ namespace SummerGames.Controllers
             Story newStory = new Story();
             if(monster.name =="Spider")
             {
-                newStory.storyBook = "You were attacked by a spider";
+                Spider spider = _context.spider.Where(m=>m.EncountersId == enconId && m.life==true).First();
+                int spideratt = spider.RandomSpiderAttack(Player1);
+                newStory.storyBook = "You were attacked by a " + monster.name + " for " + spideratt;
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
-                Spider spider= _context.spider.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                spider.RandomSpiderAttack(Player1);
+                newStory.flag = 3;
             }
             else if(monster.name =="Zombie")
             {
+                Zombie zombie= _context.zombie.Where(m=>m.EncountersId == enconId && m.life==true).First();
+                zombie.RandomZombieAttack(Player1);
                 newStory.storyBook = "You were attacked by a zombie";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
-                Zombie zombie= _context.zombie.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                zombie.RandomZombieAttack(Player1);
+                newStory.flag = 3;
             }
             else if(monster.name =="Orc")
             {
+                Orc orc = _context.orc.Where(m=>m.EncountersId == enconId && m.life==true).First();
+                orc.RandomOrcAttack(Player1);
                 newStory.storyBook = "You were attacked by an Orc";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
-                Orc orc = _context.orc.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                orc.RandomOrcAttack(Player1);
+                newStory.flag = 3;
             }
             else if(monster.name =="Dragon")
-            {
+            {                
+                Dragon dragon = _context.dragon.Where(m=>m.EncountersId == enconId && m.life==true).First();
+                dragon.RandomDragonAttack(Player1);
                 newStory.storyBook = "You were attacked by the Dragon";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
-                Dragon dragon = _context.dragon.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                dragon.RandomDragonAttack(Player1);
+                newStory.flag = 3;
             }
             
             if(Player1.health <=0)
@@ -544,7 +582,7 @@ namespace SummerGames.Controllers
                 Player1.life = false;
                 _context.Add(newStory);
                 _context.SaveChanges();
-                return RedirectToAction("GameOver");
+                return RedirectToAction("GameOver");                                    
             }
             
             SetTemp(0);
@@ -562,6 +600,8 @@ namespace SummerGames.Controllers
                 newStory.storyBook = "You Lose, Game Over!!";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
+                newStory.flag = 5;                
+                _context.Add(newStory);
                 _context.SaveChanges();
             }
             else
@@ -569,6 +609,10 @@ namespace SummerGames.Controllers
                 newStory.storyBook = "You made that Dragon Your Bitch! Cool air emerges from the vents in the ceiling.";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
+                newStory.flag = 6;                
+                HttpContext.Session.SetInt32("temp",70);
+                SetTemp(0);
+                _context.Add(newStory);                
                 _context.SaveChanges();
             }
             SetTemp(0);

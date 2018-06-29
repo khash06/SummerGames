@@ -63,6 +63,7 @@ namespace SummerGames.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PlayerId = table.Column<int>(nullable: false),
                     created_at = table.Column<DateTime>(nullable: false),
+                    flag = table.Column<int>(nullable: false),
                     storyBook = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -150,8 +151,7 @@ namespace SummerGames.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_storyline_PlayerId",
                 table: "storyline",
-                column: "PlayerId",
-                unique: true);
+                column: "PlayerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
