@@ -1,4 +1,7 @@
-﻿
+﻿<link href="https://fonts.googleapis.com/css?family=Nosifer" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lemon" rel="stylesheet">
+
+
 
 <div class="container">
     <div class="game_box">
@@ -6,7 +9,24 @@
         {
             @foreach(var thing in @ViewBag.story)
             {
-                <p>@thing.storyBook</p>
+                @if(thing.flag == 1){
+                    <p style="color:blue; font-size: 14pt">@thing.storyBook</p>
+                }
+                else if(thing.flag == 2){
+                    <p style="color:purple">@thing.storyBook</p>
+                }
+                else if(thing.flag == 3){
+                    <p style="color:red">@thing.storyBook</p>
+                }
+                else if(thing.flag == 4){
+                    <p style="color:green">@thing.storyBook</p>
+                }
+                else if(thing.flag == 5){
+                    <p style="color:crimson; font-family:'Nosifer', cursive; font-size:16pt">@thing.storyBook</p>
+                }
+                else if(thing.flag == 6){
+                    <p style="color:goldenrod; font-family:'Lemon', cursive; font-size:16pt">@thing.storyBook</p>
+                }
             }
         }
         @if(@ViewBag.start == true)

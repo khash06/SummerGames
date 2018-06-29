@@ -12,7 +12,7 @@ namespace SummerGames.Models
         public Zombie()
         { 
             name = "Zombie";
-            strength = 10;
+            strength = 15;
             health = 100;
             healthMax = 100;
         }
@@ -20,32 +20,33 @@ namespace SummerGames.Models
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);
+            int damage = 0;
             if(attack == 1)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 2)
             {
-                this.Bite(name1);
+                damage = this.Bite(name1);
             }
             if(attack == 3)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 4)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 5)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
-            return attack;
+            return damage;
         }
         public int Attack(Player name1)
         {
             Random rand = new Random();
-            int attack = rand.Next(1 * strength, 3 * strength);
+            int attack = rand.Next(3 * strength, 6 * strength);
             name1.health = name1.health - attack;
             return attack;
         }

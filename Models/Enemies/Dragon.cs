@@ -12,7 +12,7 @@ namespace SummerGames.Models
         public Dragon()
         {
             name = "Dragon";
-            strength = 10;
+            strength = 15;
             health = 300;
             healthMax = 300;
         }
@@ -20,39 +20,40 @@ namespace SummerGames.Models
         {
             Random rand = new Random();
             int attack = rand.Next(1,6);
+            int damage = 0;
             if(attack == 1)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 2)
             {
-                this.FireBreath(name1);
+                damage = this.FireBreath(name1);
             }
             if(attack == 3)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 4)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
             if(attack == 5)
             {
-                this.Attack(name1);
+                damage = this.Attack(name1);
             }
-            return attack;
+            return damage;
         }
         public int Attack(Player name1)
         {
             Random rand = new Random();
-            int attack = rand.Next(3 * strength, 5 * strength);
+            int attack = rand.Next(5 * strength, 9 * strength);
             name1.health = name1.health - attack;
             return attack;
         }
         public int FireBreath(Player name1)
         {
             Random rand = new Random();
-            int firebreath = rand.Next(9 * strength, 13 * strength);
+            int firebreath = rand.Next(11 * strength, 20 * strength);
             name1.health = name1.health - firebreath;
             return firebreath;
         }

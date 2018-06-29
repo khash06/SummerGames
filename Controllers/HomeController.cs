@@ -496,7 +496,7 @@ namespace SummerGames.Controllers
                 else if(attk == 3)
                 {
                     int attackVal = Player.Holy_Light(monster);  
-                    newStory.storyBook = "You used holy light";
+                    newStory.storyBook = "You attacked a "+ monster.name +" for "+ attackVal +" damage";
                     SetTemp(0);
                     newStory.created_at = DateTime.Now;
                     newStory.PlayerId = PlayerId;
@@ -543,7 +543,7 @@ namespace SummerGames.Controllers
             {
                 Spider spider = _context.spider.Where(m=>m.EncountersId == enconId && m.life==true).First();
                 int spideratt = spider.RandomSpiderAttack(Player1);
-                newStory.storyBook = "You were attacked by a " + monster.name + " for " + spideratt;
+                newStory.storyBook = "You were attacked by " + monster.name + " for " + spideratt + " damage";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
                 newStory.flag = 3;
@@ -551,8 +551,8 @@ namespace SummerGames.Controllers
             else if(monster.name =="Zombie")
             {
                 Zombie zombie= _context.zombie.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                zombie.RandomZombieAttack(Player1);
-                newStory.storyBook = "You were attacked by a zombie";
+                int zombireatt = zombie.RandomZombieAttack(Player1);
+                newStory.storyBook = "You were attacked by " + monster.name + " for " + zombireatt + " damage";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
                 newStory.flag = 3;
@@ -560,8 +560,8 @@ namespace SummerGames.Controllers
             else if(monster.name =="Orc")
             {
                 Orc orc = _context.orc.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                orc.RandomOrcAttack(Player1);
-                newStory.storyBook = "You were attacked by an Orc";
+                int orcatt = orc.RandomOrcAttack(Player1);
+                newStory.storyBook = "You were attacked by " + monster.name + " for " + orcatt + " damage";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
                 newStory.flag = 3;
@@ -569,8 +569,8 @@ namespace SummerGames.Controllers
             else if(monster.name =="Dragon")
             {                
                 Dragon dragon = _context.dragon.Where(m=>m.EncountersId == enconId && m.life==true).First();
-                dragon.RandomDragonAttack(Player1);
-                newStory.storyBook = "You were attacked by the Dragon";
+                int dragonatt = dragon.RandomDragonAttack(Player1);
+                newStory.storyBook = "You were attacked by " + monster.name + " for " + dragonatt + " damage";
                 newStory.created_at = DateTime.Now;
                 newStory.PlayerId = PlayerId;
                 newStory.flag = 3;
