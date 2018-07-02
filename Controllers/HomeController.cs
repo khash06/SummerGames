@@ -31,7 +31,7 @@ namespace SummerGames.Controllers
             ViewBag.health = (int)health;
             ViewBag.healthPercent = healthPercent;
             ViewBag.healthMax = (int)healthMax;
-            List<Story> story = _context.storyline.OrderByDescending(s => s.created_at).ToList();
+            List<Story> story = _context.storyline.Where(p => p.PlayerId == Id).OrderByDescending(s => s.created_at).ToList();
             ViewBag.story = story;
         }
         
@@ -306,6 +306,7 @@ namespace SummerGames.Controllers
             Encounters encounter = _context.encounters.SingleOrDefault(e=>e.EncountersId == enconId);
             Enemies monster = _context.enemies.Where(m=>m.EncountersId == enconId && m.life==true).First();
             Story newStory = new Story();
+            Story newStory2 = new Story();
             if(Player1.Class == "mage")
             {   
                 Mage Player = _context.mage.SingleOrDefault(p => p.PlayerId == PlayerId);
@@ -518,7 +519,12 @@ namespace SummerGames.Controllers
             {
                 monster.health = 0;
                 monster.life = false;
+                newStory2.storyBook = "You killed a "+ monster.name;
                 SetTemp(-10);
+                newStory2.created_at = DateTime.Now;
+                newStory2.PlayerId = PlayerId;
+                newStory2.flag = 2;
+                _context.Add(newStory2);
                 _context.SaveChanges();
             }
             List<Enemies> enemyCount = _context.enemies.Where(m=>m.EncountersId == enconId && m.life==true).ToList();
