@@ -72,6 +72,15 @@
                 <div class="progress-bar" style="width: @ViewBag.healthPercent%; background-color: @healthColor !important;">@ViewBag.health / @ViewBag.healthMax</div>
             </div>
         }
+        @if(ViewBag.monsters != null)
+        {
+            
+            foreach(var monster in @ViewBag.monsters)
+            {
+                <a href="/SaveTarget/@monster.EnemiesId"><button class="movebtn">@monster.name</button></a>
+            }
+        }
+        <hr>
         @if(ViewBag.moves != null)
         {
             int count = 1;

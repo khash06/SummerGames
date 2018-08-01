@@ -104,7 +104,7 @@ namespace SummerGames.Controllers
                     newNinja.Class = Player1.Class;
                     _context.Add(newNinja);
                     _context.SaveChanges();
-                    HttpContext.Session.SetInt32("PlayerId", newNinja.PlayerId);               
+                    HttpContext.Session.SetInt32("PlayerId", newNinja.PlayerId);
                 }
                 
                 if(Player1.Class == "samurai")
@@ -180,7 +180,7 @@ namespace SummerGames.Controllers
                 newStory.PlayerId = playerId;
                 newStory2.PlayerId = playerId;
                 newStory.flag = 1;
-                newStory2.flag = 1;                                
+                newStory2.flag = 1;
                 _context.Add(newStory2);
                 _context.SaveChanges();
             }
@@ -292,21 +292,39 @@ namespace SummerGames.Controllers
                 moves.Add("Holy_Light");
                 moves.Add("Smight");
             }
-            SetTemp(0);
+            SetTemp(0); 
+            int? enconId = HttpContext.Session.GetInt32("EncounterId");
+            Encounters encounter = _context.encounters.SingleOrDefault(e=>e.EncountersId == enconId);
+            List <Enemies> monsters = _context.enemies.Where(m=>m.EncountersId == enconId && m.life==true).ToList();
+            ViewBag.monsters = monsters;
             ViewBag.moves = moves;
             return View("Index");
-            
+        }
+        [Route("SaveTarget/{monsterId}")]
+        public IActionResult SaveTarget(int monsterId)
+        {
+            HttpContext.Session.SetInt32("MonsterId", monsterId);
+            return RedirectToAction("Moves");
         }
         [Route("playersturn/{attk}")]
         public IActionResult PlayersTurn(int attk)
-        {
+        {   
+            int? MonsterId = HttpContext.Session.GetInt32("MonsterId");
+            if(attk == 2)
+            {
+                MonsterId = 0; 
+            }
+            
+            Story Story = new Story();
             int PlayerId = (int)HttpContext.Session.GetInt32("PlayerId");
             Player Player1 = _context.player.SingleOrDefault(p => p.PlayerId == PlayerId);
             int? enconId = HttpContext.Session.GetInt32("EncounterId");
             Encounters encounter = _context.encounters.SingleOrDefault(e=>e.EncountersId == enconId);
-            Enemies monster = _context.enemies.Where(m=>m.EncountersId == enconId && m.life==true).First();
+            Enemies monster = _context.enemies.SingleOrDefault(m=>m.EnemiesId == (int)MonsterId); 
             Story newStory = new Story();
             Story newStory2 = new Story();
+            if(MonsterId !=null)
+            {
             if(Player1.Class == "mage")
             {   
                 Mage Player = _context.mage.SingleOrDefault(p => p.PlayerId == PlayerId);
@@ -515,6 +533,8 @@ namespace SummerGames.Controllers
             }
             _context.Add(newStory);
             _context.SaveChanges();
+            if(MonsterId != 0 )
+            {
             if(monster.health <= 0)
             {
                 monster.health = 0;
@@ -527,15 +547,28 @@ namespace SummerGames.Controllers
                 _context.Add(newStory2);
                 _context.SaveChanges();
             }
+            }
+            HttpContext.Session.Remove("MonsterId");
             List<Enemies> enemyCount = _context.enemies.Where(m=>m.EncountersId == enconId && m.life==true).ToList();
             if(enemyCount.Count() > 0)
             {
-            return RedirectToAction("EnemiesTurn");
+                return RedirectToAction("EnemiesTurn");
             }
             int level = (int)HttpContext.Session.GetInt32("Level");
             level++;
             HttpContext.Session.SetInt32("Level",level);
             return RedirectToAction("firstEncounter");
+            }
+            else
+            {
+                Story.storyBook = "You have to target a ememy before you can attack";
+                Story.PlayerId = PlayerId;
+                Story.flag = 2;
+                Story.created_at = DateTime.Now;
+                _context.Add(Story);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Moves");
         }
         public IActionResult EnemiesTurn()
         {
